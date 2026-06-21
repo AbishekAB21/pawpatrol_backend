@@ -1,4 +1,8 @@
+const dns = require('dns');
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
 const express = require("express"); // Imports Express framework
+const mongoose = require("mongoose"); // Imports Mongoose for MongoDB interaction
 
 const users = [];
 
@@ -27,13 +31,23 @@ app.post("/signup", (req, res) => {
   res.status(201).json({
     message: "User registered successfully",
 
-    user : {
+    user: {
       username: newUser.username,
       email: newUser.email,
     },
   });
-
 }); // Defines a POST route for user signup
+
+mongoose
+  .connect(
+    "mongodb+srv://pawpatrol_admin:svxaw5QFkUE2@cluster0.1j57cz6.mongodb.net/?appName=Cluster0",
+  )
+  .then(() => {
+    console.log("MongoDB connected successfully");
+  })
+  .catch((err) => {
+    console.log("MongoDB connection error:", err);
+  });
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
